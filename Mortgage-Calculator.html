@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Mortgage Calculator</title>
+    </head>
+    <body>
+        <div id="calculatorContainer">
+            <h1>Mortgage Calculator</h1>
+<div id="mortgageCnt">
+    <label for="mortgageAmt" id="mortAmtLabel">Mortgage Amount</label><span id="dollarSign">$</span><input type="text" id="mortgageAmt" placeholder="0.00" required></div>
+<div id="mortgageTm"><label for="mortgageTerm" id="mortTmLabel">Mortgage Term</label><span id="years">Years</span><input type="text" id="mortgageTerm" placeholder="0" required></div>
+<div id="interestRt"><label for="interestRate" id="intRateLabel">Interest Rate</label><span id="percentage">%</span><input type="text" id="interestRate" placeholder="0" required></div>
+
+    <div id="mortgageRadioBtn"><label for="repayment">Mortgage Type</label></div>
+    <div id="repayRadioBtn"><input type="radio" id="repayment" name="radioBtns">Repayment</div>
+     <div id="interestRadioBtn"><input type="radio" id="interestOnly" name="radioBtns">Interest Only</div>
+
+    <button id="calculateBtn" type="submit">Calculate Repayments</button>
+       </div>
+    </body>
+    <style> 
+        *{
+            background-color: black;
+        }
+
+    #calculatorContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 65px;
+    color: white;
+    
+} 
+
+#mortgageCnt{
+    padding-bottom: 30px;
+    
+
+
+}
+
+#mortgageTm{
+    padding-bottom: 30px;
+}
+
+#interestRt{
+    padding-bottom: 30px;
+    border-color: #6BC71D;
+} 
+
+#mortgageRadioBtn{
+    padding-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+}
+
+#repayRadioBtn{
+    padding-bottom: 5px;
+    color: white;
+}
+
+#interestRadioBtn{
+    padding-bottom: 30px;
+    color: white;
+}
+
+#calculateBtn{
+    background-color: #6BC71D;
+    color: black;
+    border-radius: 10px;
+    font-size: 2rem;
+    box-shadow: 5px 5px 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#calculateBtn:active{
+    background-color: #A6DD77
+}
+
+input[type="radio"]{
+    accent-color: #6BC71D; /* You can use this code to change the color of a radio button */
+    cursor: pointer;
+} 
+
+#mortAmtLabel{
+    padding-right: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    
+}
+
+
+
+#mortTmLabel{
+    padding-right: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-right: 25px;
+} 
+
+
+
+#intRateLabel{
+    padding-right: 30px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-right: 40px;
+    
+}
+
+#mortgageAmt::placeholder{
+    color: black;
+}
+
+#mortgageAmt{
+    filter: drop-shadow(2px 4px 8px black); /*creates a shadow without creating a box around element */
+    background-color: #6BC71D; 
+    height: 33px;
+    text-align: right;
+    border: none;
+    caret-color: #1D771D;
+}
+
+#mortgageTerm::placeholder{
+    color: black;
+}
+
+#mortgageTerm{
+    filter: drop-shadow(2px 4px 8px black);
+    background-color: #6BC71D;
+    height: 33px; 
+    text-align: right;
+    border: none;
+    caret-color: #1D771D;
+}
+
+#interestRate{
+    filter: drop-shadow(2px 4px 8px black);
+    background-color: #6BC71D;
+    height: 33px;
+    border: none;
+    text-align: right;
+    caret-color: #1D771D;
+}
+
+#interestRate::placeholder{
+    color: black;
+}
+
+#dollarSign{
+    position: absolute;
+    background-color: #1D771D;
+    display: inline-block;        /* Makes a span responsive much like a div */
+    height: 35px;
+    width: 35px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    z-index: 1;
+    line-height: 2.25;
+    
+} 
+
+#years{
+    position: absolute;
+    background-color: #1D771D;
+    display: inline-block;
+    height: 35px;
+    width: 35px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    z-index: 1;
+    line-height: 2.25;
+    
+}
+
+#percentage{
+    position: absolute;
+    background-color: #1D771D; 
+    display: inline-block;
+    height: 35px;
+    width: 35px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle; 
+    z-index: 1;        /* Had to place spans on top of their respective divs. Only works if you have a positioned element*/ 
+    line-height: 2.25;
+    
+} 
+
+h1{
+    font-size: 2.5rem;
+    background: linear-gradient(to right, #1D771D, #6BC71D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+</style>
+
+    <script>
+
+      const mortgageAmt = document.getElementById('mortgageAmt');
+    const mortgageTerm = document.getElementById('mortgageTerm');
+    const interestRate = document.getElementById('interestRate');
+    const calculate = document.getElementById('calculateBtn');
+
+    function goToResults() {
+      // Validate inputs
+      if (!mortgageAmt.value || !mortgageTerm.value || !interestRate.value) {
+        alert('Please fill in all fields.');
+        return;
+      }
+      
+      // Check which radio is selected
+      const loanType = document.getElementById('interestOnly').checked ? 'interestOnly' : 'repayment';
+
+      // Use URL parameters to send data to the second page
+      const url = `calculations.html?mortgageAmt=${encodeURIComponent(mortgageAmt.value)}&mortgageTerm=${encodeURIComponent(mortgageTerm.value)}&interestRate=${encodeURIComponent(interestRate.value)}&loanType=${loanType}`;
+      
+      window.location.href = url;
+    }
+
+    calculate.addEventListener('click', goToResults);
+     </script>
+</html>
