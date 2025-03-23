@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Calculations</title>
+    </head>
+    <body>
+        <div id="card"> 
+            <h1 id="openingText">Your results</h1>
+            <div id="openingTexts">Your results are shown below based on the information you provided. To adjust the results, edit the form and click "calculate repayments" again.</div>
+            <br>
+            <br>
+            <div id="monthlyPayments"><p>Your monthly repayments</p>
+                <div id="resultNum">3493053430</div>
+                <br>
+                <br>
+                <p id="totalOverTm">Total you'll repay over the term:</p>
+                <div id="totalPay">343054939</div>
+                </div>
+            </div>
+        
+    </body>
+    <style>
+        *{
+            background-color: black;
+        }
+
+        #card{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 55px;
+            background-color: #0A4958;
+            
+            
+        } 
+
+        #openingTexts{
+            text-align: center;
+            color: white;
+            background-color: #0A4958;
+            
+        }
+
+        #resultNum{
+           color: #6BC71D;
+           font-size: 3rem;
+           background-color: #0A4958;
+        }
+
+        h1{
+            color: white;
+            background-color: #0A4958;
+        } 
+
+        #monthlyPayments{
+            color: white;
+            text-align: center;
+            background-color: #0A4958;
+        } 
+        #totalPay{
+            padding-bottom: 50px;
+            font-size: 2rem;
+            background-color: #0A4958;
+            color: #6BC71D;
+        }
+        p{
+            background-color: #0A4958;
+        } 
+
+        h1{
+            font-size: 2.5rem;
+    background: linear-gradient(to right, #1D771D, #6BC71D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+        }
+
+        </style>
+
+    <script>
+
+
+const resultNum = document.getElementById("resultNum");
+    const totalPay = document.getElementById("totalPay");
+
+    // Parse URL parameters using URLSearchParams
+    const urlParams = new URLSearchParams(window.location.search);
+    const mortgageAmt = parseFloat(urlParams.get('mortgageAmt'));
+    const mortgageTerm = parseFloat(urlParams.get('mortgageTerm'));
+    const interestRate = parseFloat(urlParams.get('interestRate'));
+    const loanType = urlParams.get('loanType');
+
+    if (!mortgageAmt || !mortgageTerm || !interestRate || !loanType) {
+      alert("Invalid data. Please return and try again.");
+    } else {
+      let monthlyPayment = 0;
+      let totalPayment = 0;
+
+      if (loanType === 'interestOnly') {
+        // Interest-only calculation
+        monthlyPayment = (mortgageAmt * (interestRate / 100)) / 12;
+        totalPayment = (mortgageAmt * (interestRate / 100) * mortgageTerm);
+      } else {
+        // Repayment calculation using amortization formula
+        const monthlyRate = interestRate / 100 / 12;
+        const totalMonths = mortgageTerm * 12;
+        monthlyPayment = (mortgageAmt * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -totalMonths));
+        totalPayment = monthlyPayment * totalMonths;
+      }
+
+      // Update the results with dollar signs
+      resultNum.textContent = `$${monthlyPayment.toFixed(2)}`;
+      totalPay.textContent = `$${totalPayment.toFixed(2)}`;
+    }
+      
+        </script> 
+</html>
